@@ -33,7 +33,7 @@
 
 需要在指定的目录`dual_monitor_folder`中放置两张提前准备好的图片，这里以`vertical_image`和`horizontal_image`为名称，你可以随意将其改为自己想要的名称，其中图片分辨率事先裁剪好，分别对应显示器的分辨率。
 
-我的两台显示器都是1920×1080像素，所以`vertical_image`的分辨率为1080*1920,`horizontal_image`分辨率为1920*1080.
+我的两台显示器都是1920×1080像素，所以`vertical_image`的分辨率为1080\*1920,`horizontal_image`分辨率为1920\*1080.
 
 ---
 
