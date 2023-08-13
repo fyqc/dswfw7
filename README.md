@@ -33,7 +33,7 @@ Because the system will use a large image by default to cut it at a specific pix
 
 You need to place two pre-prepared pictures in the specified directory `dual_monitor_folder`, here they are named `vertical_image` and `horizontal_image`, you can change them to the name you want, and the image resolution is pre-cut , respectively corresponding to the resolution of the display.  
 
-Both of my monitors are 1920×1080 pixels, so the resolution of `vertical_image` is 1080*1920, and the resolution of `horizontal_image` is 1920*1080.
+Both of my monitors are 1920×1080 pixels, so the resolution of `vertical_image` is 1080\*1920, and the resolution of `horizontal_image` is 1920\*1080.
 
 ---
 
