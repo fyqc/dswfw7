@@ -47,7 +47,7 @@ When you choose **"Tile" (平铺)** as the picture position in Windows 7, the sy
 ### 1. Import Libraries & Set File Paths
 Instead of `winreg` (whose `UnitedVideo` GUID paths break whenever you swap display cables or update GPU drivers), we use Python's built-in `ctypes` library to query the active monitor layout directly from Windows `user32.dll`.
 
-'''Python3
+```python
 import ctypes
 from ctypes import wintypes
 import os
@@ -59,12 +59,12 @@ horizontal_image = "wallhaven-3988e6.png"  # 1920*1080
 output = "github.png"
 
 os.chdir(dual_monitor_folder)
-'''
+```
 
 ### 2. Query Real-Time Monitor Coordinates via Windows API
 `EnumDisplayMonitors` retrieves the exact virtual desktop bounding box (`left`, `top`, `right`, `bottom`) of every connected display in pixels—regardless of whether the vertical monitor is placed on the left or right, or which monitor is set as the primary display.
 
-'''Python3
+```Python
 class RECT(ctypes.Structure):
     _fields_ = [
         ("left", wintypes.LONG),
@@ -104,12 +104,12 @@ ctypes.windll.user32.EnumDisplayMonitors(
 # Identify the vertical (portrait) and horizontal (landscape) monitors automatically
 ver_mon = [m for m in monitors if m["height"] > m["width"]][0]
 hor_mon = [m for m in monitors if m["width"] >= m["height"]][0]
-'''
+```
 
 ### 3. Create the Bounding Canvas & Load Images
 Calculate the total bounding rectangle across all monitors and load both wallpapers, resizing them if necessary to match each monitor's exact resolution.
 
-'''Python3
+```Python
 total_w = max(m["right"] for m in monitors) - min(m["left"] for m in monitors)
 total_h = max(m["bottom"] for m in monitors) - min(m["top"] for m in monitors)
 final = Image.new("RGB", (total_w, total_h), "#ffffff")
@@ -121,12 +121,12 @@ if hi.size != (hor_mon["width"], hor_mon["height"]):
     hi = hi.resize((hor_mon["width"], hor_mon["height"]), Image.LANCZOS)
 if vi.size != (ver_mon["width"], ver_mon["height"]):
     vi = vi.resize((ver_mon["width"], ver_mon["height"]), Image.LANCZOS)
-'''
+```
 
 ### 4. Wrap-Around Tiling & Export
 In Windows Tile mode, coordinates outside `[0, total_w)` or `[0, total_h)` wrap around via modulo arithmetic (`start_x % cw`, `start_y % ch`). The `paste_tiled()` helper splits any overhanging image into up to 4 quadrants and places them cleanly onto the canvas—replacing manual two's-complement registry math and hard-coded crop offsets:
 
-'''Python3
+```Python
 def paste_tiled(canvas, img, start_x, start_y):
     """Wrap and paste an image across canvas boundaries to match Windows 'Tile' mode."""
     cw, ch = canvas.size
@@ -157,7 +157,7 @@ paste_tiled(final, vi, ver_mon["left"], ver_mon["top"])
 
 final.save(output)
 print(f"Successfully generated {total_w}x{total_h} wallpaper -> {output}")
-'''
+```
 
 ## How to Apply
 Run the script to generate `github.png`.
